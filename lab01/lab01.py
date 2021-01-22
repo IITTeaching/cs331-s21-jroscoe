@@ -22,7 +22,15 @@ def captured_output():
 
 # implement this function
 def is_perfect(n):
-    pass
+    if n == 1:
+        return False
+    out = 1;
+    for i in range (2, n):
+        a = n // i
+        if a * i == n:
+            out += a
+    return out == n
+
 
 # (3 points)
 def test1():
@@ -40,7 +48,10 @@ def test1():
 
 # implement this function
 def multiples_of_3_and_5(n):
-    pass
+    out = 0
+    for i in list (set (range (3, n, 3)) | set (range (5, n, 5))):
+        out += i;
+    return out
 
 # (3 points)
 def test2():
@@ -53,7 +64,13 @@ def test2():
 # EXERCISE 3
 #################################################################################
 def integer_right_triangles(p):
-    pass
+    out = 0
+    for a in range (1, p >> 1):
+        for b in range (a, p >> 1):
+            h = (a ** 2 + b ** 2) ** 0.5
+            if a + b + h == p:
+                out += 1
+    return out
 
 def test3():
     tc = unittest.TestCase()
@@ -67,23 +84,40 @@ def test3():
 
 # implement this function
 def gen_pattern(chars):
-    pass
+    l = len (chars)
+    num = 4 * (l - 1) + 1
+    if l == 0:
+        return
+    # print inital newline
+    print ('')
+    for i in range (l - 1, -1, -1):
+        st = chars [i::]
+        st = ".".join (st [1::][::-1] + st)
+        print (st.center (num, "."))
+    for i in range (1, l):
+        st = chars [i::]
+        st = ".".join (st [1::][::-1] + st)
+        print (st.center (num, "."))
 
 def test4():
+    # I don't know if changing this is allowed, but the original test4 func used self instead of tc, which caused undefined variable refrence error
+    # Also removed strip, since the test cases had leading and trailing newlines
+    # Removed random parenthasee from the first test case, since I assumed this was a typo
+    tc = unittest.TestCase()
     with captured_output() as (out,err):
         gen_pattern('@')
-        self.assertEqual(out.getvalue().strip(), '@')
+        tc.assertEqual(out.getvalue().strip(), '@')
     with captured_output() as (out,err):
         gen_pattern('@%')
-        self.assertEqual(out.getvalue().strip(),
+        tc.assertEqual(out.getvalue(),
         """
 ..%..
-%.@.%)
+%.@.%
 ..%..
 """)
         with captured_output() as (out,err):
             gen_pattern('ABC')
-            self.assertEqual(out.getvalue().strip(), """
+            tc.assertEqual(out.getvalue(), """
 ....C....
 ..C.B.C..
 C.B.A.B.C
@@ -92,7 +126,7 @@ C.B.A.B.C
 """)
         with captured_output() as (out,err):
             gen_pattern('#####')
-            self.assertEqual(out.getvalue().strip(),
+            tc.assertEqual(out.getvalue(),
                              """
 ........#........
 ......#.#.#......
@@ -106,7 +140,7 @@ C.B.A.B.C
 """)
         with captured_output() as (out,err):
             gen_pattern('abcdefghijklmnop')
-            self.assertEqual(out.getvalue().strip(),
+            tc.assertEqual(out.getvalue(),
 """
 ..............................p..............................
 ............................p.o.p............................
