@@ -100,33 +100,55 @@ def gen_pattern(chars):
         print (st.center (num, "."))
 
 def test4():
+<<<<<<< HEAD
     # I don't know if changing this is allowed, but the original test4 func used self instead of tc, which caused undefined variable refrence error
     # Also removed strip, since the test cases had leading and trailing newlines
     # Removed random parenthasee from the first test case, since I assumed this was a typo
+=======
+>>>>>>> ff8fa8d604539dceac4a3707e9b2b1fda71972f1
     tc = unittest.TestCase()
     with captured_output() as (out,err):
         gen_pattern('@')
         tc.assertEqual(out.getvalue().strip(), '@')
     with captured_output() as (out,err):
         gen_pattern('@%')
+<<<<<<< HEAD
         tc.assertEqual(out.getvalue(),
+=======
+        tc.assertEqual(out.getvalue().strip(),
+>>>>>>> ff8fa8d604539dceac4a3707e9b2b1fda71972f1
         """
 ..%..
 %.@.%
 ..%..
+<<<<<<< HEAD
 """)
         with captured_output() as (out,err):
             gen_pattern('ABC')
             tc.assertEqual(out.getvalue(), """
+=======
+""".strip())
+    with captured_output() as (out,err):
+        gen_pattern('ABC')
+        tc.assertEqual(out.getvalue().strip(),
+        """
+>>>>>>> ff8fa8d604539dceac4a3707e9b2b1fda71972f1
 ....C....
 ..C.B.C..
 C.B.A.B.C
 ..C.B.C..
 ....C....
+<<<<<<< HEAD
 """)
         with captured_output() as (out,err):
             gen_pattern('#####')
             tc.assertEqual(out.getvalue(),
+=======
+""".strip())
+    with captured_output() as (out,err):
+        gen_pattern('#####')
+        tc.assertEqual(out.getvalue().strip(),
+>>>>>>> ff8fa8d604539dceac4a3707e9b2b1fda71972f1
                              """
 ........#........
 ......#.#.#......
@@ -137,10 +159,17 @@ C.B.A.B.C
 ....#.#.#.#.#....
 ......#.#.#......
 ........#........
+<<<<<<< HEAD
 """)
         with captured_output() as (out,err):
             gen_pattern('abcdefghijklmnop')
             tc.assertEqual(out.getvalue(),
+=======
+""".strip())
+    with captured_output() as (out,err):
+        gen_pattern('abcdefghijklmnop')
+        tc.assertEqual(out.getvalue().strip(),
+>>>>>>> ff8fa8d604539dceac4a3707e9b2b1fda71972f1
 """
 ..............................p..............................
 ............................p.o.p............................
@@ -173,7 +202,7 @@ p.o.n.m.l.k.j.i.h.g.f.e.d.c.b.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p
 ..........................p.o.n.o.p..........................
 ............................p.o.p............................
 ..............................p..............................
-"""
+""".strip()
 )
 
 #################################################################################
