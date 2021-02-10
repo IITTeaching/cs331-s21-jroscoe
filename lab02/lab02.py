@@ -116,7 +116,6 @@ def gen_passage(ngram_dict, length=100):
 
     while n < length:
         lst = ngram_dict[key]
-        # assignment says to use minimum amount of random choice
         tpl = random.choice (lst)
 
         out.extend (tpl)
