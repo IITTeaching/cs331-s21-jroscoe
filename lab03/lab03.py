@@ -23,7 +23,6 @@ def mysort(lst: List[T], compare: Callable[[T, T], int]) -> List[T]:
 
     # TODO: set capacity
     out = [lst[0]]
-    out.count
     for l in range (1, len (lst)):
         elem = lst[l]
         for i in range (0, l):
