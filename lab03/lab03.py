@@ -17,7 +17,25 @@ def mysort(lst: List[T], compare: Callable[[T, T], int]) -> List[T]:
     right element, 1 if the left is larger than the right, and 0 if the two
     elements are equal.
     """
-    pass
+    # insertion sort
+    if len (lst) <= 1:
+        return lst.copy ()
+
+    # TODO: set capacity
+    out = [lst[0]]
+    out.count
+    for l in range (1, len (lst)):
+        elem = lst[l]
+        for i in range (0, l):
+            if compare (out[i], elem) == 1:
+                out.insert (i, elem)
+                break
+        else:
+            out.append (elem)
+
+    return out
+
+
 
 def mybinsearch(lst: List[T], elem: S, compare: Callable[[T, S], int]) -> int:
     """
@@ -27,7 +45,27 @@ def mybinsearch(lst: List[T], elem: S, compare: Callable[[T, S], int]) -> int:
     position of the first (leftmost) match for elem in lst. If elem does not
     exist in lst, then return -1.
     """
-    pass
+    if len (lst) == 0:
+        return -1
+
+    d = len (lst) // 2
+    i = len (lst) // 2
+    while True:
+        e = lst[i]
+        od = d
+        d //= 2
+        # arguments have to be passed in this order
+        ret = compare (e, elem)
+        if ret == 1:
+            i -= od - d
+        elif ret == -1:
+            i += od - d
+        else:
+            return i
+
+        if d == 0:
+            return -1
+
 
 class Student():
     """Custom class to test generic sorting and searching."""
@@ -105,14 +143,27 @@ def test1_5():
 #################################################################################
 # EXERCISE 2
 #################################################################################
-class PrefixSearcher():
+def strcmp (stra, strb):
+    return 1 if stra > strb else (-1 if stra < strb else 0)
 
+class PrefixSearcher():
     def __init__(self, document, k):
         """
         Initializes a prefix searcher using a document and a maximum
         search string length k.
         """
-        pass
+        self.a = []
+        self.mlen = k
+        dlen = len (document)
+        if k <= 0 or k >= dlen:
+            return
+
+        for i in range (0, k):
+            arr = []
+            for j in range (dlen):
+                arr.append (document[j:min (j + i + 1, dlen)])
+            self.a.append (mysort (arr, strcmp))
+            
 
     def search(self, q):
         """
@@ -121,7 +172,16 @@ class PrefixSearcher():
         length up to n). If q is longer than n, then raise an
         Exception.
         """
-        pass
+        qlen = len (q)
+        if qlen > self.mlen:
+            raise Error ("Search string is too long")
+
+        if qlen == 0:
+            return
+
+        arr = self.a[qlen - 1]
+        return mybinsearch (arr, q, strcmp) != -1
+
 
 # 30 Points
 def test2():
@@ -158,25 +218,44 @@ def test2_2():
 # EXERCISE 3
 #################################################################################
 class SuffixArray():
+    def sa_strcmp_int (self, inta, intb):
+        return strcmp (self.doc[inta:], self.doc[intb:])
+
+    def sa_strcmp_str (self, inta, stra):
+        return strcmp (self.doc[inta:inta + len (stra)], stra)
 
     def __init__(self, document: str):
         """
         Creates a suffix array for document (a string).
         """
-        pass
+        arr = []
+        self.doc = document
+        for i in range (len (document)):
+            arr.append (i)
+
+        self.a = mysort (arr, self.sa_strcmp_int)
 
 
     def positions(self, searchstr: str):
         """
         Returns all the positions of searchstr in the documented indexed by the suffix array.
         """
-        pass
+        out = []
+        arr = self.a
+        i = mybinsearch (arr, searchstr, self.sa_strcmp_str)
+        if i == -1:
+            return out
+
+        while self.doc[arr[i]:arr[i] + len (searchstr)] == searchstr:
+            out.append (arr[i])
+            i += 1
+        return out
 
     def contains(self, searchstr: str):
         """
         Returns true of searchstr is coontained in document.
         """
-        pass
+        return mybinsearch (self.a, searchstr, self.sa_strcmp_str) != -1
 
 # 40 Points
 def test3():
@@ -205,6 +284,15 @@ def test3_2():
     tc = unittest.TestCase()
     md_url = 'https://www.gutenberg.org/files/2701/2701-0.txt'
     md_text = urllib.request.urlopen(md_url).read().decode()
+    print ("===========================")
+    print (md_text[0:1000])
+    print ("===========================")
+    print (md_text[427:447])
+    print ("===========================")
+    print (md_text[346:366])
+    print ("===========================")
+    print (md_text[34:54])
+    print ("===========================")
     s = SuffixArray(md_text[0:1000])
     tc.assertTrue(s.contains("Moby Dick"))
     tc.assertTrue(s.contains("Herman Melville"))
