@@ -47,12 +47,12 @@ def mybinsearch(lst: List[T], elem: S, compare: Callable[[T, S], int]) -> int:
     if len (lst) == 0:
         return -1
 
-    d = len (lst) // 2
-    i = len (lst) // 2
+    d = len (lst) >> 1
+    i = len (lst) >> 1
     while True:
         e = lst[i]
         od = d
-        d //= 2
+        d >>= 1
         # arguments have to be passed in this order
         ret = compare (e, elem)
         if ret == 1:
@@ -162,7 +162,6 @@ class PrefixSearcher():
             for j in range (dlen):
                 arr.append (document[j:min (j + i + 1, dlen)])
             self.a.append (mysort (arr, strcmp))
-            
 
     def search(self, q):
         """
@@ -234,7 +233,6 @@ class SuffixArray():
 
         self.a = mysort (arr, self.sa_strcmp_int)
 
-
     def positions(self, searchstr: str):
         """
         Returns all the positions of searchstr in the documented indexed by the suffix array.
@@ -245,7 +243,12 @@ class SuffixArray():
         if i == -1:
             return out
 
-        while self.doc[arr[i]:arr[i] + len (searchstr)] == searchstr:
+        # get index of first match
+        while self.doc[arr[i]:arr[i] + len (searchstr)] == searchstr and i >= 0:
+            i -= 1
+
+        i += 1
+        while self.doc[arr[i]:arr[i] + len (searchstr)] == searchstr and i < len (arr):
             out.append (arr[i])
             i += 1
         return out
